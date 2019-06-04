@@ -34,3 +34,6 @@ Implementar un árbol de sufijos sobre cierto texto T[1, n] que soporte las cons
 - Que lenguaje usar? 🤣
 - Basta con solo una clase para todos los nodos?
 - Que información guardar en los nodos?
+
+## Construir el árbol
+Para constuir el árbol hay un algoritmo naive que toma tiempo O(n<sup>2</sup>). La idea es usar el [algoritmo de Ukkonen](https://stackoverflow.com/a/9513423) que toma tiempo O(n).
