@@ -31,9 +31,9 @@ Variante del Trie en la que se reemplazan los caminos unarios por arcos. **Para 
 Implementar un árbol de sufijos sobre cierto texto T[1, n] que soporte las consultas por count, locate y top-k-q nombradas.
 
 ## Preguntas:
-- Que lenguaje usar? 🤣
+
 - Basta con solo una clase para todos los nodos?
 - Que información guardar en los nodos?
 
 ## Construir el árbol
-Para constuir el árbol hay un algoritmo naive que toma tiempo O(n<sup>2</sup>). La idea es usar el [algoritmo de Ukkonen](https://stackoverflow.com/a/9513423) que toma tiempo O(n).
+Para constuir el árbol hay un algoritmo naive que toma tiempo O(n<sup>2</sup>). La idea es usar el [algoritmo de Ukkonen](https://stackoverflow.com/a/9513423) que toma tiempo O(n). [Aquí](http://brenden.github.io/ukkonen-animation/) hay una animación de como funciona para ciertos inputs.
