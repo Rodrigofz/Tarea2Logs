@@ -11,7 +11,6 @@ public class Main {
         Node node3 = new Node();
         node1.link(node3, "jiji");
         root.printTree(0);
-        String s = "gola";
     }
 
     public static Node buildTree(String word){
