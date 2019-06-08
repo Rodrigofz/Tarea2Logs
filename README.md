@@ -40,7 +40,9 @@ Implementar un árbol de sufijos sobre cierto texto T[1, n] que soporte las cons
 ## Preguntas
 
 - Basta con solo una clase para todos los nodos?
+>Por ahora al parecer si.
 - Que información guardar en los nodos?
+>Por ahora no mucha, los links son los que guardan la información. Hacer una especie de visitor parece una buena idea.
 
 ## Construir el árbol
 
