@@ -18,11 +18,12 @@ public class Node {
         this.edges_count = edges.size();
     }
 
-    public void link(Node son, String label) {
+    public Edge link(Node son, String label) {
         Edge link = new Edge(son, label);
         this.edges.add(link);
         this.edges_count++;
         System.out.println("Joined link: "+label);
+        return link;
     }
 
     public void setSuffixLink(Node node){
@@ -31,6 +32,10 @@ public class Node {
 
     public Node getSuffixLink(){
         return suffixLink;
+    }
+
+    public ArrayList<Edge> getEdges(){
+        return edges;
     }
 
     public void printTree(int level){
