@@ -1,5 +1,6 @@
 package node;
 
+import active_point.ActivePoint;
 import edge.Edge;
 import java.util.ArrayList;
 
@@ -24,6 +25,34 @@ public class Node {
         this.edges_count++;
         System.out.println("Joined link: "+label);
         return link;
+    }
+
+    public Edge getEdge(Edge e){
+        for(Edge ed : edges){
+            if(e.getLabel() == ed.getLabel()){
+                return ed;
+            }
+        }
+        return null;
+    }
+
+    public ActivePoint insert(ActivePoint ap, char c){
+        if(ap.active_length == 0){
+            for(Edge e : edges){
+                if(e.getLabel().charAt(0) == c){
+                    ap.active_length ++;
+                    ap.active_edge = e;
+                    return ap;
+                }
+            }
+            Node new_node = new Node();
+            Edge new_edge = this.link(new_node, "" + c);
+            ap.leafEdges.add(new_edge);
+            return ap;
+        }
+        else{
+            return ap.active_edge.insert(ap, c);
+        }
     }
 
     public void setSuffixLink(Node node){
