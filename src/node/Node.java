@@ -27,9 +27,9 @@ public class Node {
         return link;
     }
 
-    public Edge getEdge(Edge e){
+    public Edge getEdge(char c){
         for(Edge ed : edges){
-            if(e.getLabel() == ed.getLabel()){
+            if(ed.getLabel().charAt(0) == c){
                 return ed;
             }
         }
