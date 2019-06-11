@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String Args[]){
-        Node root = buildTree("banana");
+        Node root = buildTree("abcabxabcd");
         root.printTree(0);
     }
 
@@ -27,6 +27,8 @@ public class Main {
 
             //Intentar insertar en el active point
             ap = ap.insert(c);
+            root.printTree(0);
+            System.out.println("");
 
 
         }
