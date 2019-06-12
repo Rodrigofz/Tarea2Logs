@@ -32,8 +32,8 @@ public class ActivePoint {
         active_length = 0;
     }
 
-    public ActivePoint insert(char c){
-        return active_node.insert(this, c);
+    public ActivePoint insert(char c, boolean round){
+        return active_node.insert(this, c, round);
     }
 
     public char getFirstChar(){
@@ -42,9 +42,11 @@ public class ActivePoint {
 
     public int getCounter() {counter++; return counter;}
 
+    //TODO: Revisar si esto es un while.
     public void checkEdge(){
-        System.out.println("Checking ae " + active_edge + " and al" + active_length);
+        //System.out.println("Checking ae " + active_edge + " and al " + active_length);
         if(active_edge.getLabelLength() <= active_length){
+            System.out.println("Changing active point...");
             active_node = active_edge.getNode();
             active_edge = null;
             active_length = 0;

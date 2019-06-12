@@ -25,7 +25,7 @@ public class Node {
         Edge link = new Edge(son, label);
         this.edges.add(link);
         this.edges_count++;
-        System.out.println("Joined link: "+label);
+        System.out.println("Linking: " + this.label + " with " + son.label);
         return link;
     }
 
@@ -38,7 +38,7 @@ public class Node {
         return null;
     }
 
-    public ActivePoint insert(ActivePoint ap, char c){
+    public ActivePoint insert(ActivePoint ap, char c, boolean round){
         if(ap.active_length == 0){
             for(Edge e : edges){
                 if(e.getLabel().charAt(0) == c){
@@ -51,13 +51,14 @@ public class Node {
             }
             Node new_node = new Node(ap.getCounter());
             Edge new_edge = this.link(new_node, "" + c);
+            ap.toInsert = "";
             ap.leafEdges.add(new_edge);
             ap.run = false;
             ap.remainder--;
             return ap;
         }
         else{
-            return ap.active_edge.insert(ap, c);
+            return ap.active_edge.insert(ap, c, round);
         }
     }
 

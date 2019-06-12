@@ -6,8 +6,9 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String Args[]){
-        Node root = buildTree("elaelapacacapela");
+        //Node root = buildTree("aaaa");
         //Node root = buildTree("abcabxabcd");
+        Node root = buildTree("elaelapacacapela");
         root.printTree(0);
     }
 
@@ -18,6 +19,7 @@ public class Main {
         int remainder = 0;
 
         for(int i=0; i<word.length(); i++) {
+            System.out.println("\t\tRound " + (i+1));
             //Obtener caracteres
             char c = word.charAt(i);
             String c_str = "" + c;
@@ -31,14 +33,28 @@ public class Main {
             ap.remainder++;
             System.out.println("Inserting " + c + "...");
             ap.toInsert = ap.toInsert + c;
-            ap = ap.insert(c);
+            ap = ap.insert(c, true);
             while(ap.run){
-                System.out.println("Inserting " + ap.toInsert + " from previous rounds");
-                ap.insert(ap.toInsert.charAt(ap.toInsert.length()-1));
+                System.out.println("Inserting " + ap.toInsert.charAt(ap.toInsert.length()-1) + " from previous rounds into");
+                System.out.println("\tRemainder to insert: " + ap.toInsert);
+                System.out.println("\tActive node: " + ap.active_node.label);
+                if(ap.active_edge != null){
+                    System.out.println("\tActive edge: " + ap.active_edge.getLabel());
+                }
+                else{
+                    System.out.println("\tThere's no active edge :c");
+                }
+                System.out.println("\tActive length : " + ap.active_length);
+                System.out.println("\tRemainder: " + ap.remainder);
+                System.out.println("");
+                ap.insert(ap.toInsert.charAt(ap.toInsert.length()-1), false);
                 root.printTree(0);
                 System.out.println("");
+
+
             }
             root.printTree(0);
+            System.out.println("\t\tEND OF ROUND");
             System.out.println("Remainder to insert: " + ap.toInsert);
             System.out.println("Active node: " + ap.active_node.label);
             if(ap.active_edge != null){
@@ -48,6 +64,7 @@ public class Main {
                 System.out.println("There's no active edge :c");
             }
             System.out.println("Active length : " + ap.active_length);
+            System.out.println("Remainder: " + ap.remainder);
             System.out.println("");
             System.out.println("/-------------------------------------------------/");
             ap.lastSplited = null;

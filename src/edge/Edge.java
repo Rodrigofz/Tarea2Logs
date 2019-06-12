@@ -17,12 +17,11 @@ public class Edge{
         return label;
     }
 
-    public ActivePoint insert(ActivePoint ap, char c){
+    public ActivePoint insert(ActivePoint ap, char c, boolean round){
         //El sufijo ya esta en el arbol. Solo modifico active point
         if(label.charAt(ap.active_length) == c){
             ap.active_length++;
             ap.checkEdge();
-            ap.remainder++;
             ap.run = false;
             return ap;
         }
@@ -32,12 +31,13 @@ public class Edge{
             String new_label = label.substring(0, ap.active_length);
             String remainder = label.substring(ap.active_length);
             //Nuevo nodo
-            Node new_leaf1 = new Node(ap.getCounter());
-            Edge new_link1 = this.node.link(new_leaf1, remainder);
+            Node new_node = new Node(ap.getCounter());
+            Edge new_link1 = new_node.link(this.getNode(), remainder);
             this.setLabel(new_label);
+            this.setNode(new_node);
 
-            Node new_leaf2 = new Node(ap.getCounter());
-            Edge new_link2 = this.node.link(new_leaf2, String.valueOf(c));
+            Node new_leaf = new Node(ap.getCounter());
+            Edge new_link2 = new_node.link(new_leaf, String.valueOf(c));
 
             //Modificar los links que llevan a hojas
             ap.leafEdges.add(new_link1);
@@ -54,6 +54,10 @@ public class Edge{
             //Sacamos lo que insertamos
             ap.toInsert = ap.toInsert.substring(1);
             ap.remainder--;
+            if(round){
+                ap.remainder--;
+            }
+            System.out.println("Reducing remainder to: " + ap.remainder);
 
             //Rule1
             if(ap.isRoot){
@@ -69,7 +73,6 @@ public class Edge{
             }
 
             //Rule 3
-            //TODO: Para que esto funcione, hay que hacer que mas de una insercion ocurra en un paso.
             else{
                 if(ap.active_node.getSuffixLink() != null){
                     ap.active_node = ap.active_node.getSuffixLink();
@@ -80,7 +83,9 @@ public class Edge{
                 }
                 ap.active_edge = ap.active_node.getEdge(ap.active_edge.getLabel().charAt(0));
             }
-            ap.checkEdge();
+            if(ap.active_edge != null){
+                ap.checkEdge();
+            }
             return ap;
         }
     }
