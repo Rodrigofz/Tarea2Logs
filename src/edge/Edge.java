@@ -12,6 +12,7 @@ public class Edge{
         this.label = s;
     }
 
+    @Override
     public String toString(){
         return label;
     }
@@ -31,11 +32,11 @@ public class Edge{
             String new_label = label.substring(0, ap.active_length);
             String remainder = label.substring(ap.active_length);
             //Nuevo nodo
-            Node new_leaf1 = new Node();
+            Node new_leaf1 = new Node(ap.getCounter());
             Edge new_link1 = this.node.link(new_leaf1, remainder);
             this.setLabel(new_label);
 
-            Node new_leaf2 = new Node();
+            Node new_leaf2 = new Node(ap.getCounter());
             Edge new_link2 = this.node.link(new_leaf2, String.valueOf(c));
 
             //Modificar los links que llevan a hojas

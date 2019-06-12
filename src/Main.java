@@ -13,7 +13,7 @@ public class Main {
 
     public static Node buildTree(String word){
         word = word + "$";
-        Node root = new Node();
+        Node root = new Node(0);
         ActivePoint ap = new ActivePoint(root);
         int remainder = 0;
 
@@ -40,7 +40,16 @@ public class Main {
             }
             root.printTree(0);
             System.out.println("Remainder to insert: " + ap.toInsert);
+            System.out.println("Active node: " + ap.active_node.label);
+            if(ap.active_edge != null){
+                System.out.println("Active edge: " + ap.active_edge.getLabel());
+            }
+            else{
+                System.out.println("There's no active edge :c");
+            }
+            System.out.println("Active length : " + ap.active_length);
             System.out.println("");
+            System.out.println("/-------------------------------------------------/");
             ap.lastSplited = null;
 
         }

@@ -7,11 +7,13 @@ import java.util.ArrayList;
 public class Node {
     private ArrayList<Edge> edges;
     private int edges_count;
+    public int label;
     private Node suffixLink;
 
-    public Node(){
+    public Node(int n){
         edges = new ArrayList<Edge>();
         edges_count = 0;
+        label = n;
     }
 
     public Node(ArrayList<Edge> edges){
@@ -47,7 +49,7 @@ public class Node {
                     return ap;
                 }
             }
-            Node new_node = new Node();
+            Node new_node = new Node(ap.getCounter());
             Edge new_edge = this.link(new_node, "" + c);
             ap.leafEdges.add(new_edge);
             ap.run = false;
@@ -71,6 +73,11 @@ public class Node {
         return edges;
     }
 
+    @Override
+    public String toString(){
+        return "Node " + label;
+    }
+
     public void printTree(int level){
         if(edges_count == 0){
             return;
@@ -81,7 +88,7 @@ public class Node {
                 for(int j=0; j<level; j++){
                     b.append("\t");
                 }
-                System.out.println(b.toString() + "----" + edges.get(i).getLabel() + "---->");
+                System.out.println(b.toString() + this.label + "----" + edges.get(i).getLabel() + "---->" + edges.get(i).getNode().label);
                 edges.get(i).getNode().printTree(level+1);
             }
         }
