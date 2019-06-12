@@ -6,7 +6,8 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String Args[]){
-        Node root = buildTree("abcabxabcd");
+        Node root = buildTree("elaelapacacapela");
+        //Node root = buildTree("abcabxabcd");
         root.printTree(0);
     }
 
@@ -26,10 +27,21 @@ public class Main {
             }
 
             //Intentar insertar en el active point
+            ap.run = true;
+            ap.remainder++;
+            System.out.println("Inserting " + c + "...");
+            ap.toInsert = ap.toInsert + c;
             ap = ap.insert(c);
+            while(ap.run){
+                System.out.println("Inserting " + ap.toInsert + " from previous rounds");
+                ap.insert(ap.toInsert.charAt(ap.toInsert.length()-1));
+                root.printTree(0);
+                System.out.println("");
+            }
             root.printTree(0);
+            System.out.println("Remainder to insert: " + ap.toInsert);
             System.out.println("");
-
+            ap.lastSplited = null;
 
         }
         return root;

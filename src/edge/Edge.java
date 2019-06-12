@@ -12,20 +12,17 @@ public class Edge{
         this.label = s;
     }
 
+    public String toString(){
+        return label;
+    }
+
     public ActivePoint insert(ActivePoint ap, char c){
         //El sufijo ya esta en el arbol. Solo modifico active point
         if(label.charAt(ap.active_length) == c){
             ap.active_length++;
-            for(int i=0; i<ap.toInsert.size(); i++){
-                ap.toInsert.set(i, ap.toInsert.get(i) + c);
-            }
-            ap.toInsert.add(""+c);
-            if(ap.active_length == ap.active_edge.getLabelLength()){
-                ap.active_node = this.node;
-                ap.isRoot = false;
-                ap.active_length = 0;
-                ap.active_edge = null;
-            }
+            ap.checkEdge();
+            ap.remainder++;
+            ap.run = false;
             return ap;
         }
         //Hay que dividir
@@ -46,7 +43,7 @@ public class Edge{
             ap.leafEdges.add(new_link2);
             ap.leafEdges.remove(this);
 
-            //Si habia un lastSplitted, creamos suffix link
+            //Rule 2: Si habia un lastSplitted, creamos suffix link
             if(ap.lastSplited != null){
                 ap.lastSplited.setSuffixLink(this.node);
             }
@@ -54,18 +51,19 @@ public class Edge{
             ap.lastSplited = this.node;
 
             //Sacamos lo que insertamos
-            ap.toInsert.remove(0);
+            ap.toInsert = ap.toInsert.substring(1);
+            ap.remainder--;
 
             //Rule1
             if(ap.isRoot){
-                if(ap.toInsert.size()>0){
+                if(ap.toInsert.length()>0){
                     ap.active_edge = ap.active_node.getEdge(ap.getFirstChar());
                     ap.active_length--;
-                    System.out.println(ap.active_edge);
                 }
                 else{
                     ap.active_edge = null;
                     ap.active_length = 0;
+                    ap.run = false;
                 }
             }
 
@@ -77,10 +75,11 @@ public class Edge{
                 }
                 else{
                     ap.active_node = ap.root;
+                    ap.isRoot = true;
                 }
-                ap.active_edge = ap.active_node.getEdge(ap.active_edge.label.charAt(0));
+                ap.active_edge = ap.active_node.getEdge(ap.active_edge.getLabel().charAt(0));
             }
-
+            ap.checkEdge();
             return ap;
         }
     }

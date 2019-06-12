@@ -42,12 +42,16 @@ public class Node {
                 if(e.getLabel().charAt(0) == c){
                     ap.active_length ++;
                     ap.active_edge = e;
+                    ap.run = false;
+                    ap.checkEdge();
                     return ap;
                 }
             }
             Node new_node = new Node();
             Edge new_edge = this.link(new_node, "" + c);
             ap.leafEdges.add(new_edge);
+            ap.run = false;
+            ap.remainder--;
             return ap;
         }
         else{

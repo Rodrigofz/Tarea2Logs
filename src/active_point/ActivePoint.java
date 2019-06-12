@@ -6,11 +6,13 @@ import node.Node;
 import java.util.ArrayList;
 
 public class ActivePoint {
+    public boolean run;
     public boolean isRoot;
     public Node root;
     public ArrayList<Edge> leafEdges;
     public Node lastSplited;
-    public ArrayList<String> toInsert;
+    public String toInsert;
+    public int remainder;
 
     public Node active_node;
     public Edge active_edge;
@@ -20,7 +22,8 @@ public class ActivePoint {
         isRoot = true;
         root = n;
         leafEdges = new ArrayList<Edge>();
-        toInsert = new ArrayList<String>();
+        toInsert = "";
+        remainder = 0;
 
         active_node = n;
         active_edge = null;
@@ -32,6 +35,16 @@ public class ActivePoint {
     }
 
     public char getFirstChar(){
-        return toInsert.get(0).charAt(0);
+        return toInsert.charAt(0);
+    }
+
+    public void checkEdge(){
+        System.out.println("Checking ae " + active_edge + " and al" + active_length);
+        if(active_edge.getLabelLength() <= active_length){
+            active_node = active_edge.getNode();
+            active_edge = null;
+            active_length = 0;
+            isRoot = false;
+        }
     }
 }
