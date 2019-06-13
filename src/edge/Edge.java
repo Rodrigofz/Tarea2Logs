@@ -20,6 +20,9 @@ public class Edge{
     public ActivePoint insert(ActivePoint ap, char c, boolean round){
         //El sufijo ya esta en el arbol. Solo modifico active point
         if(label.charAt(ap.active_length) == c){
+            if(round){
+                System.out.println("Wanted to insert " + c + "... not dividing");
+            }
             ap.active_length++;
             ap.checkEdge();
             ap.run = false;
@@ -27,6 +30,9 @@ public class Edge{
         }
         //Hay que dividir
         else{
+            if(round){
+                System.out.println("Dividing to insert " + c);
+            }
             //Separacion de etiqueta
             String new_label = label.substring(0, ap.active_length);
             String remainder = label.substring(ap.active_length);
@@ -39,23 +45,28 @@ public class Edge{
             Node new_leaf = new Node(ap.getCounter());
             Edge new_link2 = new_node.link(new_leaf, String.valueOf(c));
 
-            //Modificar los links que llevan a hojas
-            ap.leafEdges.add(new_link1);
-            ap.leafEdges.add(new_link2);
+            //Modificar, si hay que hacerlo, los links que llevan a hojas
+            if(new_link1.getNode().getEdges_count() == 0){
+                ap.leafEdges.add(new_link1);
+            }
+            if(new_link2.getNode().getEdges_count() == 0){
+                ap.leafEdges.add(new_link2);
+            }
             ap.leafEdges.remove(this);
 
             //Rule 2: Si habia un lastSplitted, creamos suffix link
-            if(ap.lastSplited != null){
+            if(ap.lastSplited != null && ap.lastSplited.label != 0){
                 ap.lastSplited.setSuffixLink(this.node);
             }
             //Seteamos el nodo dividido como lastSplitted
             ap.lastSplited = this.node;
 
+
             //Sacamos lo que insertamos
             ap.toInsert = ap.toInsert.substring(1);
-            ap.remainder--;
+            ap.remainder = (ap.remainder==0)? 0 : ap.remainder-1;
             if(round){
-                ap.remainder--;
+                ap.remainder = (ap.remainder==0)? 0 : ap.remainder-1;
             }
             System.out.println("Reducing remainder to: " + ap.remainder);
 
@@ -79,6 +90,7 @@ public class Edge{
                 }
                 else{
                     ap.active_node = ap.root;
+                    ap.partial_string = "";
                     ap.isRoot = true;
                 }
                 ap.active_edge = ap.active_node.getEdge(ap.active_edge.getLabel().charAt(0));

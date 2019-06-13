@@ -14,6 +14,7 @@ public class ActivePoint {
     public String toInsert;
     public int remainder;
     public int counter;
+    public String partial_string;
 
     public Node active_node;
     public Edge active_edge;
@@ -26,6 +27,7 @@ public class ActivePoint {
         toInsert = "";
         remainder = 0;
         counter = 0;
+        partial_string = "";
 
         active_node = n;
         active_edge = null;
@@ -47,6 +49,7 @@ public class ActivePoint {
         //System.out.println("Checking ae " + active_edge + " and al " + active_length);
         if(active_edge.getLabelLength() <= active_length){
             System.out.println("Changing active point...");
+            partial_string = partial_string + active_edge.getLabel();
             active_node = active_edge.getNode();
             active_edge = null;
             active_length = 0;

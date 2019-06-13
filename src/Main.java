@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String Args[]){
-        //Node root = buildTree("aaaa");
-        //Node root = buildTree("abcabxabcd");
-        Node root = buildTree("elaelapacacapela");
+        Node root = buildTree("abcabxabcd");
+        //Node root = buildTree("elaelapacacapela");
+        //Node root = buildTree("GATCAATGAGGTGGA");
         root.printTree(0);
     }
 
@@ -65,6 +65,7 @@ public class Main {
             }
             System.out.println("Active length : " + ap.active_length);
             System.out.println("Remainder: " + ap.remainder);
+            System.out.println("Partial string: " + ap.partial_string);
             System.out.println("");
             System.out.println("/-------------------------------------------------/");
             ap.lastSplited = null;
