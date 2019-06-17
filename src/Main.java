@@ -6,9 +6,10 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String Args[]){
-        Node root = buildTree("abcabxabcd");
+        //Node root = buildTree("cdddcdcd");
+        //Node root = buildTree("abcabxabcd");
         //Node root = buildTree("elaelapacacapela");
-        //Node root = buildTree("GATCAATGAGGTGGA");
+        Node root = buildTree("GATCAATGAGGTGGA");
         root.printTree(0);
     }
 
@@ -23,17 +24,20 @@ public class Main {
             //Obtener caracteres
             char c = word.charAt(i);
             String c_str = "" + c;
+
+
             //Annadir caracter a cada link que lleva a hoja
             for (Edge e : ap.leafEdges) {
                 e.setLabel(e.getLabel() + c);
             }
 
+
             //Intentar insertar en el active point
             ap.run = true;
-            ap.remainder++;
             System.out.println("Inserting " + c + "...");
-            ap.toInsert = ap.toInsert + c;
             ap = ap.insert(c, true);
+
+
             while(ap.run){
                 System.out.println("Inserting " + ap.toInsert.charAt(ap.toInsert.length()-1) + " from previous rounds into");
                 System.out.println("\tRemainder to insert: " + ap.toInsert);
@@ -53,6 +57,7 @@ public class Main {
 
 
             }
+
             root.printTree(0);
             System.out.println("\t\tEND OF ROUND");
             System.out.println("Remainder to insert: " + ap.toInsert);

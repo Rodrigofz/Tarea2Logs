@@ -24,6 +24,12 @@ public class Edge{
                 System.out.println("Wanted to insert " + c + "... not dividing");
             }
             ap.active_length++;
+            if(ap.lastSplited != null){
+                ap.lastSplited.setSuffixLink(ap.active_node);
+                ap.lastSplited = ap.active_node;
+            }
+            ap.toInsert = ap.toInsert + c;
+            ap.remainder ++;
             ap.checkEdge();
             ap.run = false;
             return ap;
@@ -63,24 +69,30 @@ public class Edge{
 
 
             //Sacamos lo que insertamos
-            ap.toInsert = ap.toInsert.substring(1);
-            ap.remainder = (ap.remainder==0)? 0 : ap.remainder-1;
-            if(round){
+            if(!round){
+                ap.toInsert = ap.toInsert.substring(1);
                 ap.remainder = (ap.remainder==0)? 0 : ap.remainder-1;
+                System.out.println("Reducing remainder to: " + ap.remainder);
             }
-            System.out.println("Reducing remainder to: " + ap.remainder);
 
             //Rule1
             if(ap.isRoot){
                 if(ap.toInsert.length()>0){
-                    ap.active_edge = ap.active_node.getEdge(ap.getFirstChar());
+                    ap.run = true;
                     ap.active_length--;
+                    ap.active_edge = (ap.active_length == 0)? null : ap.active_edge;
                 }
-                else{
+                /*
+                if(ap.active_length>0){
+                    ap.active_edge = ap.active_node.getEdge(ap.getFirstChar());
+                    ap.checkEdge();
+                    //ap.active_length--;
+                }
+                if(ap.active_length == 0){
                     ap.active_edge = null;
-                    ap.active_length = 0;
-                    ap.run = false;
+                    ap.run = ap.toInsert.length() != 0;
                 }
+                */
             }
 
             //Rule 3
@@ -93,7 +105,8 @@ public class Edge{
                     ap.partial_string = "";
                     ap.isRoot = true;
                 }
-                ap.active_edge = ap.active_node.getEdge(ap.active_edge.getLabel().charAt(0));
+                ap.active_edge = null;
+                //ap.active_edge = ap.active_node.getEdge(ap.active_edge.getLabel().charAt(0));
             }
             if(ap.active_edge != null){
                 ap.checkEdge();
