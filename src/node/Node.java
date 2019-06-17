@@ -54,6 +54,9 @@ public class Node {
                     ap.active_edge = e;
                     ap.active_length++;
                     ap.run = false;
+                    if(ap.lastSplited != null){
+                        ap.lastSplited.setSuffixLink(ap.active_node);
+                    }
                     //Checkear edge
                     if(ap.active_edge != null){
                         ap.checkEdge();

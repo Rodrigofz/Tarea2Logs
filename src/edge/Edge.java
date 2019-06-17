@@ -23,6 +23,9 @@ public class Edge{
         if(this.getLabel().charAt(ap.active_length) == c){
             System.out.println("In label, advancing ap...");
             ap.active_length++;
+            if(ap.lastSplited != null){
+                ap.lastSplited.setSuffixLink(ap.active_node);
+            }
             ap.checkEdge();
             ap.run = false;
             return ap;
@@ -65,7 +68,9 @@ public class Edge{
                 System.out.println("Creating suffix link from " + ap.lastSplited + " to " + new_node);
                 ap.lastSplited.setSuffixLink(new_node);
             }
+            System.out.println("Setting last splitted as " + new_node);
             ap.lastSplited = new_node;
+
 
             //Rule 1
             if(ap.isRoot && ap.active_length>0){
@@ -79,6 +84,7 @@ public class Edge{
                 if(slink != null){
                     System.out.println("Following suffix link to " + slink);
                     ap.active_node = slink;
+                    ap.isRoot = ap.active_node.label == 0;
                 }
                 else{
                     ap.active_node = ap.root;
@@ -86,10 +92,11 @@ public class Edge{
                 }
                 ap.active_edge = (ap.active_length==0)? null : ap.active_node.getEdge(ap.active_edge.getLabel().charAt(0));
             }
-
+             
             if(ap.active_edge != null){
                 ap.checkEdge();
             }
+
 
             ap.run = ap.remainder != 0;
             return ap;

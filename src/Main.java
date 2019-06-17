@@ -6,11 +6,12 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String Args[]){
-        Node root = buildTree("cdddcdcd");
+        //Node root = buildTree("cdddcdcd");
         //Node root = buildTree("abcabxabcd");
         //Node root = buildTree("elaelapacacapela");
-        //Node root = buildTree("GATCAATGAGGTGGA");
+        Node root = buildTree("GATCAATGAGGTGGA");
         //Node root = buildTree("abcdabe");
+        //Node root = buildTree("BANANA");
     }
 
     public static Node buildTree(String word){
