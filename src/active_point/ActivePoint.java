@@ -34,8 +34,8 @@ public class ActivePoint {
         active_length = 0;
     }
 
-    public ActivePoint insert(char c, boolean round){
-        return active_node.insert(this, c, round);
+    public ActivePoint insert(char c){
+        return active_node.insert(this, c);
     }
 
     public char getFirstChar(){
@@ -48,12 +48,13 @@ public class ActivePoint {
     public void checkEdge(){
         if(active_edge.getLabelLength() <= active_length){
             System.out.println("Changing active point...");
-            toInsert = toInsert.substring(active_edge.getLabelLength());
-            remainder = remainder - active_edge.getLabelLength();
-            run = remainder != 0;
-            partial_string = partial_string + active_edge.getLabel();
-            active_node = active_edge.getNode();
+            //toInsert = toInsert.substring(active_edge.getLabelLength());
+            //remainder = remainder - active_edge.getLabelLength();
 
+
+            partial_string = partial_string + active_edge.getLabel();
+
+            active_node = active_edge.getNode();
             active_edge = null;
             active_length = 0;
             isRoot = false;

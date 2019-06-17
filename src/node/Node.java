@@ -38,88 +38,76 @@ public class Node {
         return null;
     }
 
-    public ActivePoint insert(ActivePoint ap, char c, boolean round){
-
-        if(String.valueOf(c).equals(ap.partial_string)){
-            if (round) {
-                System.out.println(c + " already on partial string, not inserting");
-            }
-            ap.remainder++;
-            ap.partial_string = "";
-            ap.run = false;
-            return ap;
+    public ActivePoint insert(ActivePoint ap, char c){
+        //Tengo active edge, es responsabilidad de este hacer la insercion.
+        if(ap.active_edge != null){
+            return ap.active_edge.insert(ap, c);
         }
-
-        if(ap.active_length == 0){
-            System.out.println("");
-            for(Edge e : edges){
+        //No tengo active edge.
+        //Veo si el caracter esta en alguno de los edges.
+        else{
+            //Busco si el caracter esta en algun edge
+            for(Edge e : ap.active_node.getEdges()){
                 if(e.getLabel().charAt(0) == c){
-                    if(round){
-                        System.out.println(c + " already on label, changing active point");
-                    }
-                    ap.toInsert = ap.toInsert + c;
-                    ap.remainder++;
-                    ap.active_length ++;
+                    //El caracter esta en este edge
+                    //Se mueve el active point, no se sigue insertando
                     ap.active_edge = e;
+                    ap.active_length++;
                     ap.run = false;
-                    ap.partial_string = "";
-                    if(!round){
-                        ap.remainder++;
+                    //Checkear edge
+                    if(ap.active_edge != null){
+                        ap.checkEdge();
                     }
-                    ap.checkEdge();
                     return ap;
                 }
-            }
-            System.out.println("Inserting " + c + " directly into node");
-            Node new_node = new Node(ap.getCounter());
-            Edge new_edge = this.link(new_node, "" + c);
 
-            if(!round){
-                if(ap.toInsert.length() == 1){
-                    ap.toInsert = "";
-                    ap.run = false;
-                }
-                else{
-                    ap.toInsert = ap.toInsert.substring(1);
-                    ap.run = true;
-                }
-                ap.remainder = (ap.remainder==0)? 0 : ap.remainder-1;
             }
-            else{
-                ap.run = false;
-            }
-            ap.leafEdges.add(new_edge);
+            //El caracter no esta en ningun edge
+            //Inserto directamente al nodo
+            Node new_node = new Node(ap.getCounter());
+            Edge new_link = ap.active_node.link(new_node, "" + c);
+            ap.leafEdges.add(new_link);
+
+            //Modificar el toInsert
+            ap.toInsert = (ap.toInsert.length()==1)?"":ap.toInsert.substring(1);
+
+            //Modificar remainder
+            ap.remainder--;
 
             //Rule 2
-            if(!ap.isRoot && ap.lastSplited != null && ap.lastSplited.label != 0){
+            if(ap.lastSplited!=null){
+                System.out.println("Creating suffix link from " + ap.lastSplited + " to " + this);
                 ap.lastSplited.setSuffixLink(this);
+                ap.lastSplited = this;
+            }
+
+            //Rule 1
+            if(ap.isRoot && ap.active_length>0){
+                ap.active_length--;
+                ap.active_edge = ap.active_node.getEdge(ap.toInsert.charAt(0));
             }
 
             //Rule 3
             if(!ap.isRoot){
-                if(this.getSuffixLink()!=null){
-                    ap.active_node = this.getSuffixLink();
+                Node slink = ap.active_node.getSuffixLink();
+                if(slink != null){
+                    System.out.println("Following suffix link to " + slink);
+                    ap.active_node = slink;
                 }
                 else{
                     ap.active_node = ap.root;
-                    ap.partial_string = "";
                     ap.isRoot = true;
                 }
+                ap.active_edge = (ap.active_length==0)? null : ap.active_node.getEdge(ap.active_edge.getLabel().charAt(0));
             }
 
-
-            if(ap.toInsert.length()>0){
-                if(ap.active_node.getEdge(ap.toInsert.charAt(0)) != null){
-                    ap.active_edge = ap.active_node.getEdge(ap.toInsert.charAt(0));
-                    ap.active_length++;
-                    ap.checkEdge();
-                }
+            if(ap.active_edge != null){
+                ap.checkEdge();
             }
 
+            ap.run = ap.remainder != 0;
             return ap;
-        }
-        else{
-            return ap.active_edge.insert(ap, c, round);
+
         }
     }
 
