@@ -153,20 +153,21 @@ public class Node {
         Node new_root = edge.getNode();
         String label_edge = edge.toString();
 
-        if (!(P.startsWith(label_edge))){return null;}
+        if (!(P.startsWith(label_edge)) && !label_edge.startsWith(P)){return null;}
 
-        while(!label_edge.equals(P) && label_edge.length()<=P.length()){
+        while(!label_edge.equals(P) && !label_edge.startsWith(P)){
 
             int position = label_edge.length();
 
             char wanted_char = P.charAt(position);
 
             edge = new_root.getEdge(wanted_char);
+
             if (edge == null){return null;}
             label_edge = label_edge + edge.toString();
-            if (label_edge.charAt(label_edge.length() - 1)=='$'){label_edge = label_edge.substring(0, label_edge.length()-1);}
+
             new_root = edge.getNode();
-            if (!(P.startsWith(label_edge))){return null;}
+            if (!(P.startsWith(label_edge)) && !label_edge.startsWith(P)){return null;}
         }
 
         return new_root;
@@ -180,16 +181,22 @@ public class Node {
     public ArrayList<Integer> locate(String P){
         ArrayList<Integer> locations = new ArrayList<Integer>();
         Node new_root = this.find_node(P);
-
         if(new_root==null){return locations;}
-        for (Edge e : new_root.getEdges()){
-            aux_loc(e, locations);
+        if(new_root.edges_count==0){
+            locations.add(new_root.label);
+        }
+        else{
+            for (Edge e : new_root.getEdges()){
+                locations.addAll(aux_loc(e));
+            }
         }
 
         return locations;
     }
 
-    public static ArrayList<Integer> aux_loc (Edge e, ArrayList<Integer> locations){
+
+    public static ArrayList<Integer> aux_loc (Edge e){
+        ArrayList<Integer> locations = new ArrayList<Integer>();
         Node node = e.getNode();
         int count_edges = node.edges_count;
         if (count_edges == 0){
@@ -197,13 +204,12 @@ public class Node {
         }
         else{
             for (Edge ed : node.getEdges()){
-                aux_loc(ed, locations);
+                locations.addAll(aux_loc(ed));
             }
         }
 
         return locations;
     }
-
 
 
     public int count(String P){
@@ -215,11 +221,11 @@ public class Node {
         if(new_root.edges_count==0){
             n++;
         }
-        else {
-            for (Edge e : new_root.getEdges()) {
-                n += aux_count(e);
-            }
+
+        for (Edge e : new_root.getEdges()) {
+            n += aux_count(e);
         }
+
 
         return n;
     }

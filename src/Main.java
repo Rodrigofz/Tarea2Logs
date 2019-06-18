@@ -12,7 +12,7 @@ public class Main {
         //Node root = buildTree("GATCAATGAGGTGGA");
         //Node root = buildTree("abcdabe");
         Node root = buildTree("BANANA");
-        System.out.println(root.count("NANA"));
+        System.out.println(root.locate("N"));
     }
 
     public static Node buildTree(String word){
