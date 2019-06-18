@@ -9,9 +9,10 @@ public class Main {
         //Node root = buildTree("cdddcdcd");
         //Node root = buildTree("abcabxabcd");
         //Node root = buildTree("elaelapacacapela");
-        Node root = buildTree("GATCAATGAGGTGGA");
+        //Node root = buildTree("GATCAATGAGGTGGA");
         //Node root = buildTree("abcdabe");
-        //Node root = buildTree("BANANA");
+        Node root = buildTree("BANANA");
+        System.out.println(root.count("NANA"));
     }
 
     public static Node buildTree(String word){
