@@ -96,12 +96,13 @@ public class Node {
                 if(slink != null){
                     System.out.println("Following suffix link to " + slink);
                     ap.active_node = slink;
+                    ap.isRoot = ap.active_node.label == 0;
                 }
                 else{
                     ap.active_node = ap.root;
                     ap.isRoot = true;
                 }
-                ap.active_edge = (ap.active_length==0)? null : ap.active_node.getEdge(ap.active_edge.getLabel().charAt(0));
+                ap.active_edge = (ap.active_length==0 || ap.active_edge==null)? null : ap.active_node.getEdge(ap.active_edge.getLabel().charAt(0));
             }
 
             if(ap.active_edge != null){

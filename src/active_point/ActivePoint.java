@@ -52,9 +52,23 @@ public class ActivePoint {
             //remainder = remainder - active_edge.getLabelLength();
 
             active_node = active_edge.getNode();
+            int ex_label_l = active_edge.getLabelLength();
             active_length -= active_edge.getLabelLength();
             active_edge = null;
             isRoot = false;
+
+            if(active_length > 0){
+                for(Edge e : active_node.getEdges()){
+                    if(e.getLabel().charAt(0) == toInsert.charAt(ex_label_l)){
+                        active_edge = e;
+                    }
+                }
+                if(active_edge!=null){
+                    this.checkEdge();
+                }
+            }
         }
+
+
     }
 }

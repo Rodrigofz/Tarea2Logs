@@ -23,11 +23,11 @@ public class Edge{
         if(this.getLabel().charAt(ap.active_length) == c){
             System.out.println("In label, advancing ap...");
             ap.active_length++;
+            ap.run = false;
             if(ap.lastSplited != null){
                 ap.lastSplited.setSuffixLink(ap.active_node);
             }
             ap.checkEdge();
-            ap.run = false;
             return ap;
         }
         //De lo contrario, divido
@@ -90,9 +90,11 @@ public class Edge{
                     ap.active_node = ap.root;
                     ap.isRoot = true;
                 }
+                System.out.println("LLEGUE AQUI XD");
+                System.out.println("Active length = " + ap.active_length);
                 ap.active_edge = (ap.active_length==0)? null : ap.active_node.getEdge(ap.active_edge.getLabel().charAt(0));
             }
-             
+
             if(ap.active_edge != null){
                 ap.checkEdge();
             }
