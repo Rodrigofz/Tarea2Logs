@@ -73,8 +73,8 @@ public class Edge{
 
 
             //Rule 1
-            if(ap.isRoot && ap.active_length>0){
-                ap.active_length--;
+            if(ap.isRoot){
+                ap.active_length = (ap.active_length==0)?0: ap.active_length-1;
                 ap.active_edge = (ap.active_length==0)? null : ap.active_node.getEdge(ap.toInsert.charAt(0));
             }
 

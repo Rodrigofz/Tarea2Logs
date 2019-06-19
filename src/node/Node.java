@@ -54,6 +54,7 @@ public class Node {
                     ap.active_edge = e;
                     ap.active_length++;
                     ap.run = false;
+
                     if(ap.lastSplited != null){
                         ap.lastSplited.setSuffixLink(ap.active_node);
                     }
@@ -85,9 +86,12 @@ public class Node {
             }
 
             //Rule 1
-            if(ap.isRoot && ap.active_length>0){
-                ap.active_length--;
-                ap.active_edge = ap.active_node.getEdge(ap.toInsert.charAt(0));
+            if(ap.isRoot){
+                ap.active_length = (ap.active_length==0)?0:ap.active_length-1;
+                ap.active_edge = (ap.active_length==0)?null:ap.active_node.getEdge(ap.toInsert.charAt(0));
+                if(ap.active_edge == null && ap.toInsert != ""){
+                    System.out.println("No encontre ningun edge con " + ap.toInsert.charAt(0) + ":c");
+                }
             }
 
             //Rule 3

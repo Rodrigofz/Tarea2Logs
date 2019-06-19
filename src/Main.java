@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String Args[]){
-        Node root = buildTree("GATCAATGAGGTGGACACCAGAGGCGGGGACTTGTAAATAACACTGGGCTGTAGGAGTGATGGGGTTCACCTCTAATTCT" +
+        /*Node root = buildTree("GATCAATGAGGTGGACACCAGAGGCGGGGACTTGTAAATAACACTGGGCTGTAGGAGTGATGGGGTTCACCTCTAATTCT" +
                 "AAGATGGCTAGATAATGCATCTTTCAGGGTTGTGCTTCTATCTAGAAGGTAGAGCTGTGGTCGTTCAATAAAAGTCCTCA" +
                 "AGAGGTTGGTTAATACGCATGTTTAATAGTACAGTATGGTGACTATAGTCAACAATAATTTATTGTACATTTTTAAATAG" +
                 "CTAGAAGAAAAGCATTGGGAAGTTTCCAACATGAAGAAAAGATAAATGGTCAAGGGAATGGATATCCTAATTACCCTGAT" +
@@ -26,13 +26,13 @@ public class Main {
                 "TTCCTCCAGCAGTTCCCTGTCTGAGCTGCTGTCCTTGGACTTGAAGAAGCTTCTGGAACATGCTGGGGAGGAAGGAAGAC" +
                 "ATTTCACTTATTGAGTGGCCTGATGCAGAACAGAGACCCAGCTGGTTCACTCTAGTTCGGACTAAAACTCACCCCTGTCT" +
                 "ATAAGCATCAGCCTCGGCAGGATGCATTTCACATTTGTGATCTCATTTAACCTCCACAAAGACCCAGAAGGGTTGGTAAC" +
-                "ATTATCATACCTAGGCCTACTATTTTAAAAATCTAACACCCATGCAGCCCGGGCACTGAAGTGGAGGCTGGCCACGGAGA");
+                "ATTATCATACCTAGGCCTACTATTTTAAAAATCTAACACCCATGCAGCCCGGGCACTGAAGTGGAGGCTGGCCACGGAGA");*/
         //Node root = buildTree("cdddcdcd");
         //Node root = buildTree("abcabxabcd");
         //Node root = buildTree("elaelapacacapela");
         //Node root = buildTree("GATCAATGAGGTGGA");
         //Node root = buildTree("BANANA");
-        //Node root = buildTree("hopolapacopomopoepestapamapas");
+        Node root = buildTree("hopolapacopomopoepestapamapas");
         //Node root = buildTree("abcdabe");
         //Node root = buildTree("BANANA");
         //System.out.println(root.locate("N"));
@@ -42,7 +42,6 @@ public class Main {
         word = word + "$";
         Node root = new Node(0);
         ActivePoint ap = new ActivePoint(root);
-        int remainder = 0;
 
         for(int i=0; i<word.length(); i++) {
             char c = word.charAt(i);
@@ -61,6 +60,7 @@ public class Main {
                 System.out.println("END OF ROUND");
                 root.printTree(0);
                 System.out.println("Active node: " + ap.active_node);
+                System.out.println("Is root: " + ap.isRoot);
                 if(ap.active_edge != null){
                     System.out.println("Active edge: " + ap.active_edge);
                 }
