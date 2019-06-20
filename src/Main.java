@@ -10,7 +10,10 @@ import java.util.Random;
 import java.nio.file.*;
 import java.lang.Math.*;
 import java.lang.String.*;
+import java.text.NumberFormat;
+import java.util.stream.*;
 
+import java.lang.instrument.Instrumentation;
 
 
 public class Main {
@@ -27,11 +30,59 @@ public class Main {
         Node root = buildTree(sub_text);
         final long buildTime = System.nanoTime() - startBuild;
 
+
+        try{
+            BufferedWriter writer = new BufferedWriter(new FileWriter("out/buildTime_exp.csv", true));
+            String line = Integer.toString(i) + "," + Integer.toString(n) + "," + 
+                Long.toString(buildTime) + "," + type + "\n";
+            writer.append(line);
+            writer.close(); 
+        }
+        catch (IOException e){
+            e.printStackTrace(); 
+        } 
+
         // Si es english los patrones P seran 
         // n/10 palabras del texto T seleccionadas de forma aleatoria.
         Random rand = new Random();
         if(type.equals("english")){
-            System.out.println("english");
+            int lines_count = 0;
+            try{
+                BufferedReader reader = new BufferedReader(new FileReader("../datasets/english_words"));
+                while (reader.readLine() != null) lines_count++;
+                reader.close();
+            }catch (IOException e){e.printStackTrace();} 
+            
+            long countTimeAcc = 0;
+            long locateTimeAcc = 0;
+            for(int j=0; j<n/10; j++){
+                try (Stream<String> lines = Files.lines(Paths.get("../datasets/english_words"))) {
+                    int r = rand.nextInt(lines_count-1);
+                    String p = lines.skip(r).findFirst().get();
+                    
+                    long startCount = System.nanoTime();
+                    root.count(p);
+                    long countTime = System.nanoTime() - startCount;
+                    countTimeAcc+=countTime;
+
+                    long startLocate = System.nanoTime();
+                    root.locate(p);
+                    long locateTime = System.nanoTime() - startLocate;
+                    locateTimeAcc+=locateTime;
+
+                }catch (IOException e){e.printStackTrace();}
+            }
+            long countTimeProm = countTimeAcc/(n/10);
+            long locateTimeProm = locateTimeAcc/(n/10);
+
+            try{
+                BufferedWriter writer = new BufferedWriter(new FileWriter("out/english_count_locate_exp.csv", true));
+                String line = Integer.toString(i) + "," + Integer.toString(n) + "," + 
+                    Long.toString(countTimeProm) + "," + Long.toString(locateTimeProm) +
+                    "," + "english\n";
+                    writer.append(line);
+                    writer.close();    
+                }catch(IOException e){e.printStackTrace();} 
         }else{
             // Si es ADN los patrones P serán n/10 substrings del texto de tamanos 
             // m = {8, 16, 32, 64} escogidos aleatoriamente
@@ -42,7 +93,6 @@ public class Main {
                     long locateTimeAcc = 0;
                     for(int j=0;j<n/10;j++){
                         int r = rand.nextInt(sub_text.length()-64);
-                        
                         String p = sub_text.substring(r, r+m[k]);
 
                         long startCount = System.nanoTime();
@@ -59,10 +109,9 @@ public class Main {
                     long locateTimeProm = locateTimeAcc/(n/10);
                     try{
                         BufferedWriter writer = new BufferedWriter(new FileWriter("out/dna_count_locate_exp.csv", true));
-                        String line = Integer.toString(i) + ", " + Integer.toString(n) + ", " + 
-                            Long.toString(buildTime) + ", " + 
-                            Long.toString(countTimeProm) + ", " + Long.toString(locateTimeProm) +
-                            ", " + Integer.toString(m[k]) + ", " + "dna\n";
+                        String line = Integer.toString(i) + "," + Integer.toString(n) + "," + 
+                            Long.toString(countTimeProm) + "," + Long.toString(locateTimeProm) +
+                            "," + Integer.toString(m[k]) + "," + "dna\n";
                         writer.append(line);
                         writer.close();    
                     }
@@ -82,8 +131,8 @@ public class Main {
                         long topkqTime = System.nanoTime() - startTopkq;
                         try{
                             BufferedWriter writer = new BufferedWriter(new FileWriter("out/dna_topkq_exp.csv", true));
-                            String line = Integer.toString(n) + ", " + Long.toString(buildTime) + ", " +
-                                Integer.toString(k) + ", " + Integer.toString(q) + ", " +
+                            String line = Integer.toString(n) + "," +
+                                Integer.toString(k) + "," + Integer.toString(q) + "," +
                                 Long.toString(topkqTime) + ", dna\n;
                             writer.append(line);
                             writer.close();    
@@ -113,6 +162,8 @@ public class Main {
             String dna_text = dna_dataset.readLine();
             String english_text = english_dataset.readLine();
 
+            BufferedWriter w0 = new BufferedWriter(new FileWriter("out/buildTime_exp.csv"));
+            w0.write("");
             BufferedWriter w1 = new BufferedWriter(new FileWriter("out/dna_count_locate_exp.csv"));
             w1.write("");
             BufferedWriter w2 = new BufferedWriter(new FileWriter("out/dna_topkq_exp.csv"));
@@ -124,12 +175,13 @@ public class Main {
                         
 
             //n = 2^i simbolos, con i {10, 11, . . . , 23}
-            experiment(dna_text, 10, "dna");
+            //experiment(dna_text, 10, "dna");
             //experiment(english_text, 2, "english");
-            /*for(int i=10;i<=23;i++){
+            for(int i=10;i<=12;i++){
+                System.out.println(i);
                 experiment(dna_text, i, "dna");
                 experiment(english_text, i, "english");
-            }*/
+            }
             
             dna_dataset.close();
             english_dataset.close();
