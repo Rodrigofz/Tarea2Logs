@@ -161,17 +161,19 @@ public class Main {
                 "ATTTCACTTATTGAGTGGCCTGATGCAGAACAGAGACCCAGCTGGTTCACTCTAGTTCGGACTAAAACTCACCCCTGTCT" +
                 "ATAAGCATCAGCCTCGGCAGGATGCATTTCACATTTGTGATCTCATTTAACCTCCACAAAGACCCAGAAGGGTTGGTAAC" +
                 "ATTATCATACCTAGGCCTACTATTTTAAAAATCTAACACCCATGCAGCCCGGGCACTGAAGTGGAGGCTGGCCACGGAGA");
+        root.printTree(0);
         */
         //Node root = buildTree("cdddcdcd");
-        //Node root = buildTree("abcabxabcd");
+        //Node root = quadratic_build("abcabxabcd");
+        //root.printTree(0);
         //Node root = buildTree("elaelapacacapela");
         //Node root = buildTree("GATCAATGAGGTGGA");
         //Node root = buildTree("BANANA");
         //Node root = buildTree("hopolapacopomopoepestapamapas");
         //Node root = buildTree("abcdabe");
         //Node root = buildTree("BANANA");
-        Node root = quadratic_build("GATCAATGAGGTGGA");
-        root.printTree(0);
+        //Node root = quadratic_build("GATCAATGAGGTGGA");
+        //root.printTree(0);
         //System.out.println(root.locate("N"));
     }
 
@@ -183,7 +185,6 @@ public class Main {
 
         for(int i=1; i<word.length(); i++){
             String suffix = word.substring(i);
-            System.out.println("Inserting: " + suffix);
             root.quadratic_insert(suffix, i);
         }
 
