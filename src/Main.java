@@ -102,7 +102,7 @@ public class Main {
     }
 
     public static void main(String Args[]){
-
+        /*
         String dna_file = "../datasets/clean_datasets/dna_clean.50MB";
         String english_file = "../datasets/clean_datasets/english_clean.50MB";
         
@@ -126,10 +126,10 @@ public class Main {
             //n = 2^i simbolos, con i {10, 11, . . . , 23}
             experiment(dna_text, 10, "dna");
             //experiment(english_text, 2, "english");
-            /*for(int i=10;i<=23;i++){
+            for(int i=10;i<=23;i++){
                 experiment(dna_text, i, "dna");
                 experiment(english_text, i, "english");
-            }*/
+            }
             
             dna_dataset.close();
             english_dataset.close();
@@ -137,10 +137,12 @@ public class Main {
         }
         catch (IOException e){
             e.printStackTrace(); 
-        }  
+        }
 
-        
-        /*Node root = buildTree("GATCAATGAGGTGGACACCAGAGGCGGGGACTTGTAAATAACACTGGGCTGTAGGAGTGATGGGGTTCACCTCTAATTCT" +
+        */
+
+        /*
+        Node root = quadratic_build("GATCAATGAGGTGGACACCAGAGGCGGGGACTTGTAAATAACACTGGGCTGTAGGAGTGATGGGGTTCACCTCTAATTCT" +
                 "AAGATGGCTAGATAATGCATCTTTCAGGGTTGTGCTTCTATCTAGAAGGTAGAGCTGTGGTCGTTCAATAAAAGTCCTCA" +
                 "AGAGGTTGGTTAATACGCATGTTTAATAGTACAGTATGGTGACTATAGTCAACAATAATTTATTGTACATTTTTAAATAG" +
                 "CTAGAAGAAAAGCATTGGGAAGTTTCCAACATGAAGAAAAGATAAATGGTCAAGGGAATGGATATCCTAATTACCCTGAT" +
@@ -160,7 +162,8 @@ public class Main {
                 "TTCCTCCAGCAGTTCCCTGTCTGAGCTGCTGTCCTTGGACTTGAAGAAGCTTCTGGAACATGCTGGGGAGGAAGGAAGAC" +
                 "ATTTCACTTATTGAGTGGCCTGATGCAGAACAGAGACCCAGCTGGTTCACTCTAGTTCGGACTAAAACTCACCCCTGTCT" +
                 "ATAAGCATCAGCCTCGGCAGGATGCATTTCACATTTGTGATCTCATTTAACCTCCACAAAGACCCAGAAGGGTTGGTAAC" +
-                "ATTATCATACCTAGGCCTACTATTTTAAAAATCTAACACCCATGCAGCCCGGGCACTGAAGTGGAGGCTGGCCACGGAGA");*/
+                "ATTATCATACCTAGGCCTACTATTTTAAAAATCTAACACCCATGCAGCCCGGGCACTGAAGTGGAGGCTGGCCACGGAGA");
+        */
         //Node root = buildTree("cdddcdcd");
         //Node root = buildTree("abcabxabcd");
         //Node root = buildTree("elaelapacacapela");
@@ -169,7 +172,24 @@ public class Main {
         //Node root = buildTree("hopolapacopomopoepestapamapas");
         //Node root = buildTree("abcdabe");
         //Node root = buildTree("BANANA");
+        Node root = quadratic_build("GATCAATGAGGTGGA");
+        root.printTree(0);
         //System.out.println(root.locate("N"));
+    }
+
+    public static Node quadratic_build(String word){
+        word = word + "$";
+        Node root = new Node(0);
+        Node new_leaf = new Node(0);
+        root.link(new_leaf, word);
+
+        for(int i=1; i<word.length(); i++){
+            String suffix = word.substring(i);
+            System.out.println("Inserting: " + suffix);
+            root.quadratic_insert(suffix, i);
+        }
+
+        return root;
     }
 
     public static Node buildTree(String word){
