@@ -281,7 +281,6 @@ public class Node {
             n += aux_count(e);
         }
 
-
         return n;
     }
 
@@ -345,6 +344,9 @@ public class Node {
             for(Edge e : n.getEdges()){
                 leafs += aux_count(e);
             }
+            if(n.getEdges_count()==0){
+                leafs = 1;
+            }
             quantities.put(s, leafs);
         }
         System.out.println(quantities.toString());
@@ -353,7 +355,6 @@ public class Node {
 
         for(HashMap.Entry<String, Integer> pair : quantities.entrySet()){
             String s = pair.getKey();
-            System.out.println(s);
             int quantity = pair.getValue();
             if(words_sorted.size() == 0){
                 words_sorted.add(s);
@@ -370,7 +371,7 @@ public class Node {
 
         }
         System.out.println(words_sorted.toString());
-        return words_sorted.subList(0, k);
+        return words_sorted;
     }
 
 
