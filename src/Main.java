@@ -102,7 +102,6 @@ public class Main {
     }
 
     public static void main(String Args[]){
-        /*
         String dna_file = "../datasets/clean_datasets/dna_clean.50MB";
         String english_file = "../datasets/clean_datasets/english_clean.50MB";
         
@@ -124,7 +123,6 @@ public class Main {
                         
 
             //n = 2^i simbolos, con i {10, 11, . . . , 23}
-            experiment(dna_text, 10, "dna");
             //experiment(english_text, 2, "english");
             for(int i=10;i<=23;i++){
                 experiment(dna_text, i, "dna");
@@ -139,7 +137,7 @@ public class Main {
             e.printStackTrace(); 
         }
 
-        */
+
 
         /*
         Node root = quadratic_build("GATCAATGAGGTGGACACCAGAGGCGGGGACTTGTAAATAACACTGGGCTGTAGGAGTGATGGGGTTCACCTCTAATTCT" +
