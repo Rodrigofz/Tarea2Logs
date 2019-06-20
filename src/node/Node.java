@@ -38,6 +38,47 @@ public class Node {
         return null;
     }
 
+    public static String greatestCommonPrefix(String a, String b) {
+        int minLength = Math.min(a.length(), b.length());
+        for (int i = 0; i < minLength; i++) {
+            if (a.charAt(i) != b.charAt(i)) {
+                return a.substring(0, i);
+            }
+        }
+        return a.substring(0, minLength);
+    }
+
+    public void quadratic_insert(String s, int label){
+        for(Edge e : edges){
+            String common_prefix = greatestCommonPrefix(e.getLabel(), s);
+            if(common_prefix.equals("")){
+                continue;
+            }
+            else if(common_prefix.equals(e.getLabel())){
+                s = s.substring(e.getLabelLength());
+                e.getNode().quadratic_insert(s, label);
+                return;
+            }
+            else{
+                String rest1 = e.getLabel().substring(common_prefix.length());
+                String rest2 = s.substring(common_prefix.length());
+                Node new_node = new Node(-1);
+                Node new_leaf = new Node(label);
+
+                Node new_leaf2 = e.getNode();
+                e.setNode(new_node);
+                e.setLabel(common_prefix);
+
+                new_node.link(new_leaf2, rest1);
+                new_node.link(new_leaf, rest2);
+                return;
+            }
+        }
+        //Inserto directo, termino el match
+        Node new_node = new Node(label);
+        this.link(new_node, s);
+    }
+
     public ActivePoint insert(ActivePoint ap, char c){
         //Tengo active edge, es responsabilidad de este hacer la insercion.
         if(ap.active_edge != null){
@@ -146,7 +187,7 @@ public class Node {
                 for(int j=0; j<level; j++){
                     b.append("\t");
                 }
-                //System.out.println(b.toString() + this.label + "----" + edges.get(i).getLabel() + "---->" + edges.get(i).getNode().label);
+                System.out.println(b.toString() + this.label + "----" + edges.get(i).getLabel() + "---->" + edges.get(i).getNode().label);
                 edges.get(i).getNode().printTree(level+1);
             }
         }

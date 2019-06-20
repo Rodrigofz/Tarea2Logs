@@ -27,7 +27,7 @@ public class Main {
 
         //Inserta texto en el suffix tree; Se mide el tiempo
         final long startBuild = System.nanoTime();
-        Node root = buildTree(sub_text);
+        Node root = quadratic_build(sub_text);
         final long buildTime = System.nanoTime() - startBuild;
 
 
@@ -151,7 +151,6 @@ public class Main {
     }
 
     public static void main(String Args[]){
-
         String dna_file = "../datasets/clean_datasets/dna_clean.50MB";
         String english_file = "../datasets/clean_datasets/english_clean.50MB";
         
@@ -175,9 +174,20 @@ public class Main {
                         
 
             //n = 2^i simbolos, con i {10, 11, . . . , 23}
-            //experiment(dna_text, 10, "dna");
-            //experiment(english_text, 2, "english");
-            for(int i=10;i<=12;i++){
+
+            //Calentamiento:
+            Node root = quadratic_build(dna_text.substring(0, 2048));
+            root.count("AC");
+            root.locate("AC");
+            int lines_count = 0;
+            try{
+                BufferedReader reader = new BufferedReader(new FileReader("../datasets/english_words"));
+                while (reader.readLine() != null) lines_count++;
+                reader.close();
+            }catch (IOException e){e.printStackTrace();} 
+
+            
+            for(int i=10;i<=15;i++){
                 System.out.println(i);
                 experiment(dna_text, i, "dna");
                 experiment(english_text, i, "english");
@@ -189,10 +199,12 @@ public class Main {
         }
         catch (IOException e){
             e.printStackTrace(); 
-        }  
+        }
 
-        
-        /*Node root = buildTree("GATCAATGAGGTGGACACCAGAGGCGGGGACTTGTAAATAACACTGGGCTGTAGGAGTGATGGGGTTCACCTCTAATTCT" +
+
+
+        /*
+        Node root = quadratic_build("GATCAATGAGGTGGACACCAGAGGCGGGGACTTGTAAATAACACTGGGCTGTAGGAGTGATGGGGTTCACCTCTAATTCT" +
                 "AAGATGGCTAGATAATGCATCTTTCAGGGTTGTGCTTCTATCTAGAAGGTAGAGCTGTGGTCGTTCAATAAAAGTCCTCA" +
                 "AGAGGTTGGTTAATACGCATGTTTAATAGTACAGTATGGTGACTATAGTCAACAATAATTTATTGTACATTTTTAAATAG" +
                 "CTAGAAGAAAAGCATTGGGAAGTTTCCAACATGAAGAAAAGATAAATGGTCAAGGGAATGGATATCCTAATTACCCTGAT" +
@@ -212,16 +224,35 @@ public class Main {
                 "TTCCTCCAGCAGTTCCCTGTCTGAGCTGCTGTCCTTGGACTTGAAGAAGCTTCTGGAACATGCTGGGGAGGAAGGAAGAC" +
                 "ATTTCACTTATTGAGTGGCCTGATGCAGAACAGAGACCCAGCTGGTTCACTCTAGTTCGGACTAAAACTCACCCCTGTCT" +
                 "ATAAGCATCAGCCTCGGCAGGATGCATTTCACATTTGTGATCTCATTTAACCTCCACAAAGACCCAGAAGGGTTGGTAAC" +
-                "ATTATCATACCTAGGCCTACTATTTTAAAAATCTAACACCCATGCAGCCCGGGCACTGAAGTGGAGGCTGGCCACGGAGA");*/
+                "ATTATCATACCTAGGCCTACTATTTTAAAAATCTAACACCCATGCAGCCCGGGCACTGAAGTGGAGGCTGGCCACGGAGA");
+        root.printTree(0);
+        */
         //Node root = buildTree("cdddcdcd");
-        //Node root = buildTree("abcabxabcd");
+        //Node root = quadratic_build("abcabxabcd");
+        //root.printTree(0);
         //Node root = buildTree("elaelapacacapela");
         //Node root = buildTree("GATCAATGAGGTGGA");
         //Node root = buildTree("BANANA");
         //Node root = buildTree("hopolapacopomopoepestapamapas");
         //Node root = buildTree("abcdabe");
         //Node root = buildTree("BANANA");
+        //Node root = quadratic_build("GATCAATGAGGTGGA");
+        //root.printTree(0);
         //System.out.println(root.locate("N"));
+    }
+
+    public static Node quadratic_build(String word){
+        word = word + "$";
+        Node root = new Node(0);
+        Node new_leaf = new Node(0);
+        root.link(new_leaf, word);
+
+        for(int i=1; i<word.length(); i++){
+            String suffix = word.substring(i);
+            root.quadratic_insert(suffix, i);
+        }
+
+        return root;
     }
 
     public static Node buildTree(String word){
@@ -244,7 +275,7 @@ public class Main {
             while(ap.run){
                 ap.insert(ap.toInsert.charAt(ap.toInsert.length()-1));
                 //System.out.println("END OF ROUND");
-                root.printTree(0);
+                //root.printTree(0);
                 //System.out.println("Active node: " + ap.active_node);
                 //System.out.println("Is root: " + ap.isRoot);
                 /*if(ap.active_edge != null){
