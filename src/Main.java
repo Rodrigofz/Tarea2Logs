@@ -151,6 +151,7 @@ public class Main {
     }
 
     public static void main(String Args[]){
+        /*
         String dna_file = "../datasets/clean_datasets/dna_clean.50MB";
         String english_file = "../datasets/clean_datasets/english_clean.50MB";
         
@@ -201,7 +202,7 @@ public class Main {
             e.printStackTrace(); 
         }
 
-
+        */
 
         /*
         Node root = quadratic_build("GATCAATGAGGTGGACACCAGAGGCGGGGACTTGTAAATAACACTGGGCTGTAGGAGTGATGGGGTTCACCTCTAATTCT" +
@@ -225,8 +226,9 @@ public class Main {
                 "ATTTCACTTATTGAGTGGCCTGATGCAGAACAGAGACCCAGCTGGTTCACTCTAGTTCGGACTAAAACTCACCCCTGTCT" +
                 "ATAAGCATCAGCCTCGGCAGGATGCATTTCACATTTGTGATCTCATTTAACCTCCACAAAGACCCAGAAGGGTTGGTAAC" +
                 "ATTATCATACCTAGGCCTACTATTTTAAAAATCTAACACCCATGCAGCCCGGGCACTGAAGTGGAGGCTGGCCACGGAGA");
-        root.printTree(0);
+        root.topkq(1, 2);
         */
+
         //Node root = buildTree("cdddcdcd");
         //Node root = quadratic_build("abcabxabcd");
         //root.printTree(0);
@@ -235,7 +237,8 @@ public class Main {
         //Node root = buildTree("BANANA");
         //Node root = buildTree("hopolapacopomopoepestapamapas");
         //Node root = buildTree("abcdabe");
-        //Node root = buildTree("BANANA");
+        Node root = quadratic_build("BANANA");
+        root.topkq(2,3 );
         //Node root = quadratic_build("GATCAATGAGGTGGA");
         //root.printTree(0);
         //System.out.println(root.locate("N"));
@@ -252,6 +255,7 @@ public class Main {
             root.quadratic_insert(suffix, i);
         }
 
+        root.setUpLengths(0);
         return root;
     }
 

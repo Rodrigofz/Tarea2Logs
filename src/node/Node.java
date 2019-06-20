@@ -2,12 +2,16 @@ package node;
 
 import active_point.ActivePoint;
 import edge.Edge;
+import javafx.util.Pair;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Node {
     private ArrayList<Edge> edges;
     private int edges_count;
     public int label;
+    public int partial_length;
     private Node suffixLink;
 
     public Node(int n){
@@ -38,6 +42,8 @@ public class Node {
         return null;
     }
 
+    //Codigo para obtener el prefijo comun mas largo entre 2 strings a y b
+    //https://stackoverflow.com/questions/8033655/find-longest-common-prefix
     public static String greatestCommonPrefix(String a, String b) {
         int minLength = Math.min(a.length(), b.length());
         for (int i = 0; i < minLength; i++) {
@@ -224,6 +230,8 @@ public class Node {
         return edges_count;
     }
 
+    //Consulta locate de la tarea
+    //Retorna un array de las posiciones en las que ocurre un patron P en el arbol
     public ArrayList<Integer> locate(String P){
         ArrayList<Integer> locations = new ArrayList<Integer>();
         Node new_root = this.find_node(P);
@@ -240,7 +248,7 @@ public class Node {
         return locations;
     }
 
-
+    //Dado un edge, retorna todas un arrayList con los labels de las hojas.
     public static ArrayList<Integer> aux_loc (Edge e){
         ArrayList<Integer> locations = new ArrayList<Integer>();
         Node node = e.getNode();
@@ -257,7 +265,8 @@ public class Node {
         return locations;
     }
 
-
+    //Consulta count de la tarea
+    //Cuenta cuantas veces se repite un patron en el arbol
     public int count(String P){
         int n=0;
         Node new_root = this.find_node(P);
@@ -272,10 +281,10 @@ public class Node {
             n += aux_count(e);
         }
 
-
         return n;
     }
 
+    //Cuenta a cuantas hojas se puede llegar desde el nodo, yendo por un Edge e dado.
     public static int aux_count (Edge e){
         Node node = e.getNode();
         int n=0;
@@ -291,5 +300,88 @@ public class Node {
 
         return n;
     }
+
+    //Configura los largos parciales de cada nodo.
+    public void setUpLengths(int length){
+        partial_length = length;
+        for(Edge e : edges){
+            e.getNode().setUpLengths(length + e.getLabel().length());
+        }
+    }
+
+    public HashMap<String, Node> findStrings(int length, String s, int q){
+        if (length <= 0){
+            HashMap<String, Node> to_return = new HashMap<String, Node>();
+            to_return.put(s.substring(0, q), this);
+            return to_return;
+        }
+        HashMap<String, Node> to_return = new HashMap<String, Node>();
+        for(Edge e : edges){
+            if(e.getLabel().charAt(0) == '$'){
+                continue;
+            }
+            String new_s = s+e.getLabel();
+            int new_l = length-e.getLabelLength();
+            if(e.getLabel().charAt(e.getLabelLength()-1) == '$'){
+                new_s = s+e.getLabel().substring(0, e.getLabelLength()-1);
+                new_l++;
+            }
+            to_return.putAll(e.getNode().findStrings(new_l, new_s, q));
+        }
+        return to_return;
+    }
+
+    //Consulta top-k-q de la tarea
+    //Retorna un Array de los k strings de largo q que mas se repiten en el arbol
+    public ArrayList<String> topkq(int k, int q){
+        int counter = 0;
+        HashMap<String, Node> string_node = findStrings(q, "", q);
+        HashMap<Integer, ArrayList<String> > quantities = new HashMap<Integer, ArrayList<String>>();
+        for(HashMap.Entry<String, Node> pair : string_node.entrySet()){
+            String s = pair.getKey();
+            Node n = pair.getValue();
+
+            int leafs = 0;
+            for(Edge e : n.getEdges()){
+                leafs += aux_count(e);
+            }
+            if(n.getEdges_count()==0){
+                leafs = 1;
+            }
+            if(leafs > counter){
+                counter = leafs;
+            }
+            if(quantities.containsKey(leafs)){
+                quantities.get(leafs).add(s);
+            }
+            else{
+                quantities.put(leafs, new ArrayList<String>());
+                quantities.get(leafs).add(s);
+            }
+        }
+        ArrayList<String> words_sorted = new ArrayList<String>();
+        while(k!=0){
+            if(quantities.containsKey(counter)){
+                int elements = quantities.get(counter).size();
+                if(k>=elements){
+                    words_sorted.addAll(quantities.get(counter));
+                    k-=elements;
+                    counter--;
+                }
+                else{
+                    words_sorted.addAll(quantities.get(counter).subList(0, k));
+                    k=0;
+                    counter--;
+                }
+            }
+            else{
+                counter--;
+            }
+        }
+        return words_sorted;
+
+    }
+
+
 
 }
