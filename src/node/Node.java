@@ -361,6 +361,9 @@ public class Node {
         }
         ArrayList<String> words_sorted = new ArrayList<String>();
         while(k!=0){
+            if(counter == 0){
+                break;
+            }
             if(quantities.containsKey(counter)){
                 int elements = quantities.get(counter).size();
                 if(k>=elements){
