@@ -334,8 +334,9 @@ public class Node {
     //Consulta top-k-q de la tarea
     //Retorna un Array de los k strings de largo q que mas se repiten en el arbol
     public ArrayList<String> topkq(int k, int q){
+        int counter = 0;
         HashMap<String, Node> string_node = findStrings(q, "", q);
-        HashMap<String, Integer> quantities = new HashMap<String, Integer>();
+        HashMap<Integer, ArrayList<String> > quantities = new HashMap<Integer, ArrayList<String>>();
         for(HashMap.Entry<String, Node> pair : string_node.entrySet()){
             String s = pair.getKey();
             Node n = pair.getValue();
@@ -347,31 +348,38 @@ public class Node {
             if(n.getEdges_count()==0){
                 leafs = 1;
             }
-            quantities.put(s, leafs);
-        }
-        System.out.println(quantities.toString());
-        ArrayList<String> words_sorted = new ArrayList<String>();
-        ArrayList<Integer> quants_sorted = new ArrayList<Integer>();
-
-        for(HashMap.Entry<String, Integer> pair : quantities.entrySet()){
-            String s = pair.getKey();
-            int quantity = pair.getValue();
-            if(words_sorted.size() == 0){
-                words_sorted.add(s);
-                quants_sorted.add(quantity);
-                continue;
+            if(leafs > counter){
+                counter = leafs;
             }
-            for(int i=0; i<quants_sorted.size(); i++){
-                if(quants_sorted.get(i)>quantity){
-                    quants_sorted.add(i+1, quantity);
-                    words_sorted.add(i+1, s);
-                    break;
+            if(quantities.containsKey(leafs)){
+                quantities.get(leafs).add(s);
+            }
+            else{
+                quantities.put(leafs, new ArrayList<String>());
+                quantities.get(leafs).add(s);
+            }
+        }
+        ArrayList<String> words_sorted = new ArrayList<String>();
+        while(k!=0){
+            if(quantities.containsKey(counter)){
+                int elements = quantities.get(counter).size();
+                if(k>=elements){
+                    words_sorted.addAll(quantities.get(counter));
+                    k-=elements;
+                    counter--;
+                }
+                else{
+                    words_sorted.addAll(quantities.get(counter).subList(0, k));
+                    k=0;
+                    counter--;
                 }
             }
-
+            else{
+                counter--;
+            }
         }
-        System.out.println(words_sorted.toString());
         return words_sorted;
+
     }
 
 
