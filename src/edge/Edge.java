@@ -21,7 +21,7 @@ public class Edge{
         //Veo si el caracter esta en el active point
         //Si esta, muevo el active point, no sigo insertando
         if(this.getLabel().charAt(ap.active_length) == c){
-            System.out.println("In label, advancing ap...");
+            //System.out.println("In label, advancing ap...");
             ap.active_length++;
             ap.run = false;
             if(ap.lastSplited != null){
@@ -32,7 +32,7 @@ public class Edge{
         }
         //De lo contrario, divido
         else{
-            System.out.println("Dividing...");
+            //System.out.println("Dividing...");
             //Nuevas labels
             String half1 = this.getLabel().substring(0, ap.active_length);
             String half2 = this.getLabel().substring(ap.active_length);
@@ -65,10 +65,10 @@ public class Edge{
             //Rules
             //Rule 2
             if(ap.lastSplited!=null){
-                System.out.println("Creating suffix link from " + ap.lastSplited + " to " + new_node);
+                //System.out.println("Creating suffix link from " + ap.lastSplited + " to " + new_node);
                 ap.lastSplited.setSuffixLink(new_node);
             }
-            System.out.println("Setting last splitted as " + new_node);
+            //System.out.println("Setting last splitted as " + new_node);
             ap.lastSplited = new_node;
 
 
@@ -82,7 +82,7 @@ public class Edge{
             if(!ap.isRoot){
                 Node slink = ap.active_node.getSuffixLink();
                 if(slink != null){
-                    System.out.println("Following suffix link to " + slink);
+                    //System.out.println("Following suffix link to " + slink);
                     ap.active_node = slink;
                     ap.isRoot = ap.active_node.label == 0;
                 }
@@ -90,8 +90,8 @@ public class Edge{
                     ap.active_node = ap.root;
                     ap.isRoot = true;
                 }
-                System.out.println("LLEGUE AQUI XD");
-                System.out.println("Active length = " + ap.active_length);
+                //System.out.println("LLEGUE AQUI XD");
+                //System.out.println("Active length = " + ap.active_length);
                 ap.active_edge = (ap.active_length==0)? null : ap.active_node.getEdge(ap.active_edge.getLabel().charAt(0));
             }
 

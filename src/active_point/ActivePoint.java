@@ -47,7 +47,7 @@ public class ActivePoint {
     //TODO: Revisar si esto es un while.
     public void checkEdge(){
         if(active_edge.getLabelLength() <= active_length){
-            System.out.println("Changing active point...");
+            //System.out.println("Changing active point...");
             //toInsert = toInsert.substring(active_edge.getLabelLength());
             //remainder = remainder - active_edge.getLabelLength();
 
