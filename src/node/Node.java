@@ -146,7 +146,7 @@ public class Node {
                 for(int j=0; j<level; j++){
                     b.append("\t");
                 }
-                //System.out.println(b.toString() + this.label + "----" + edges.get(i).getLabel() + "---->" + edges.get(i).getNode().label);
+                System.out.println(b.toString() + this.label + "----" + edges.get(i).getLabel() + "---->" + edges.get(i).getNode().label);
                 edges.get(i).getNode().printTree(level+1);
             }
         }

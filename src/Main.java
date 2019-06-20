@@ -103,6 +103,7 @@ public class Main {
 
     public static void main(String Args[]){
 
+        /*
         String dna_file = "../datasets/clean_datasets/dna_clean.50MB";
         String english_file = "../datasets/clean_datasets/english_clean.50MB";
         
@@ -126,10 +127,10 @@ public class Main {
             //n = 2^i simbolos, con i {10, 11, . . . , 23}
             experiment(dna_text, 10, "dna");
             //experiment(english_text, 2, "english");
-            /*for(int i=10;i<=23;i++){
+            for(int i=10;i<=23;i++){
                 experiment(dna_text, i, "dna");
                 experiment(english_text, i, "english");
-            }*/
+            }
             
             dna_dataset.close();
             english_dataset.close();
@@ -137,7 +138,8 @@ public class Main {
         }
         catch (IOException e){
             e.printStackTrace(); 
-        }  
+        }
+        */
 
         
         /*Node root = buildTree("GATCAATGAGGTGGACACCAGAGGCGGGGACTTGTAAATAACACTGGGCTGTAGGAGTGATGGGGTTCACCTCTAATTCT" +
@@ -160,16 +162,18 @@ public class Main {
                 "TTCCTCCAGCAGTTCCCTGTCTGAGCTGCTGTCCTTGGACTTGAAGAAGCTTCTGGAACATGCTGGGGAGGAAGGAAGAC" +
                 "ATTTCACTTATTGAGTGGCCTGATGCAGAACAGAGACCCAGCTGGTTCACTCTAGTTCGGACTAAAACTCACCCCTGTCT" +
                 "ATAAGCATCAGCCTCGGCAGGATGCATTTCACATTTGTGATCTCATTTAACCTCCACAAAGACCCAGAAGGGTTGGTAAC" +
-                "ATTATCATACCTAGGCCTACTATTTTAAAAATCTAACACCCATGCAGCCCGGGCACTGAAGTGGAGGCTGGCCACGGAGA");*/
+                "ATTATCATACCTAGGCCTACTATTTTAAAAATCTAACACCCATGCAGCCCGGGCACTGAAGTGGAGGCTGGCCACGGAGA");
+                */
         //Node root = buildTree("cdddcdcd");
         //Node root = buildTree("abcabxabcd");
         //Node root = buildTree("elaelapacacapela");
         //Node root = buildTree("GATCAATGAGGTGGA");
         //Node root = buildTree("BANANA");
-        //Node root = buildTree("hopolapacopomopoepestapamapas");
+        Node root = buildTree("hopolapacopomopoepestapamapas");
         //Node root = buildTree("abcdabe");
         //Node root = buildTree("BANANA");
-        //System.out.println(root.locate("N"));
+        System.out.println(root.count("pa"));
+        System.out.println(root.locate("pa"));
     }
 
     public static Node buildTree(String word){
@@ -191,20 +195,20 @@ public class Main {
 
             while(ap.run){
                 ap.insert(ap.toInsert.charAt(ap.toInsert.length()-1));
-                //System.out.println("END OF ROUND");
+                System.out.println("END OF ROUND");
                 root.printTree(0);
-                //System.out.println("Active node: " + ap.active_node);
-                //System.out.println("Is root: " + ap.isRoot);
-                /*if(ap.active_edge != null){
+                System.out.println("Active node: " + ap.active_node);
+                System.out.println("Is root: " + ap.isRoot);
+                if(ap.active_edge != null){
                     System.out.println("Active edge: " + ap.active_edge);
                 }
                 else{
                     System.out.println("Active edge: null");
-                }*/
-                //System.out.println("Active length: " + ap.active_length);
-                //System.out.println("Remainder: " + ap.remainder);
-                //System.out.println("To insert: " + ap.toInsert);
-                //System.out.println("------------------------------------");
+                }
+                System.out.println("Active length: " + ap.active_length);
+                System.out.println("Remainder: " + ap.remainder);
+                System.out.println("To insert: " + ap.toInsert);
+                System.out.println("------------------------------------");
             }
 
             ap.lastSplited = null;

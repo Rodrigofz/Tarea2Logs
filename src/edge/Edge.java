@@ -38,7 +38,7 @@ public class Edge{
             String half2 = this.getLabel().substring(ap.active_length);
 
             //Nuevos nodos
-            Node new_node = new Node(ap.getCounter());
+            Node new_node = new Node(-1);
             Node new_leaf = new Node(ap.getCounter());
 
             //Modificar links correspondientes
