@@ -249,7 +249,6 @@ public class Node {
         }
 
         return n;
-
     }
 
 }
