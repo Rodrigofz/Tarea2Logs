@@ -44,13 +44,8 @@ public class ActivePoint {
 
     public int getCounter() {counter++; return counter;}
 
-    //TODO: Revisar si esto es un while.
     public void checkEdge(){
         if(active_edge.getLabelLength() <= active_length){
-            //System.out.println("Changing active point...");
-            //toInsert = toInsert.substring(active_edge.getLabelLength());
-            //remainder = remainder - active_edge.getLabelLength();
-
             active_node = active_edge.getNode();
             int ex_label_l = active_edge.getLabelLength();
             active_length -= active_edge.getLabelLength();

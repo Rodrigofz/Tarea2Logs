@@ -2,7 +2,6 @@ package node;
 
 import active_point.ActivePoint;
 import edge.Edge;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +28,6 @@ public class Node {
         Edge link = new Edge(son, label);
         this.edges.add(link);
         this.edges_count++;
-        //System.out.println("Linking: " + this.label + " with " + son.label);
         return link;
     }
 
@@ -127,7 +125,6 @@ public class Node {
 
             //Rule 2
             if(ap.lastSplited!=null){
-                //System.out.println("Creating suffix link from " + ap.lastSplited + " to " + this);
                 ap.lastSplited.setSuffixLink(this);
                 ap.lastSplited = this;
             }
@@ -136,16 +133,13 @@ public class Node {
             if(ap.isRoot){
                 ap.active_length = (ap.active_length==0)?0:ap.active_length-1;
                 ap.active_edge = (ap.active_length==0)?null:ap.active_node.getEdge(ap.toInsert.charAt(0));
-                if(ap.active_edge == null && ap.toInsert != ""){
-                    //System.out.println("No encontre ningun edge con " + ap.toInsert.charAt(0) + ":c");
-                }
+                
             }
 
             //Rule 3
             if(!ap.isRoot){
                 Node slink = ap.active_node.getSuffixLink();
                 if(slink != null){
-                    //System.out.println("Following suffix link to " + slink);
                     ap.active_node = slink;
                     ap.isRoot = ap.active_node.label == 0;
                 }

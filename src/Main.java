@@ -82,11 +82,33 @@ public class Main {
                     "," + "english\n";
                     writer.append(line);
                     writer.close();    
-                }catch(IOException e){e.printStackTrace();} 
+            }catch(IOException e){e.printStackTrace();} 
+            
+            int k_arr[] = {3,5,10};
+                int q_arr[] = {4, 5, 6, 7};
+                for (int k: k_arr){
+                    for(int q: q_arr){
+                        long startTopkq = System.nanoTime();
+                        root.topkq(k,q);
+                        long topkqTime = System.nanoTime() - startTopkq;
+                        try{
+                            BufferedWriter writer = new BufferedWriter(new FileWriter("out/english_topkq_exp.csv", true));
+                            String line = Integer.toString(i) + ","+Integer.toString(n) + "," +
+                                Integer.toString(k) + "," + Integer.toString(q) + "," +
+                                Long.toString(topkqTime) + ", english\n";
+                            writer.append(line);
+                            writer.close();    
+                        }
+                        catch (IOException e){
+                            e.printStackTrace(); 
+                        } 
+                    }
+                }
         }else{
             // Si es ADN los patrones P serán n/10 substrings del texto de tamanos 
             // m = {8, 16, 32, 64} escogidos aleatoriamente
             if(type.equals("dna")){
+                
                 int m[] = {8,16,32,64};
                 for(int k=0; k<4; k++){
                     long countTimeAcc = 0;
@@ -118,22 +140,22 @@ public class Main {
                     catch (IOException e){
                         e.printStackTrace(); 
                     } 
-                    
-
+                                    
                 }   
-                /*
+                
+                
                 int k_arr[] = {3,5,10};
                 int q_arr[] = {4,8,16,32};
                 for (int k: k_arr){
                     for(int q: q_arr){
                         long startTopkq = System.nanoTime();
-                        root.top_k_q(k,q);
+                        root.topkq(k,q);
                         long topkqTime = System.nanoTime() - startTopkq;
                         try{
                             BufferedWriter writer = new BufferedWriter(new FileWriter("out/dna_topkq_exp.csv", true));
-                            String line = Integer.toString(n) + "," +
+                            String line = Integer.toString(i) + ","+ Integer.toString(n) + "," +
                                 Integer.toString(k) + "," + Integer.toString(q) + "," +
-                                Long.toString(topkqTime) + ", dna\n;
+                                Long.toString(topkqTime) + ", dna\n";
                             writer.append(line);
                             writer.close();    
                         }
@@ -143,7 +165,7 @@ public class Main {
                     }
                 }
                 
-                */  
+                  
                 
                 
             }  
@@ -151,7 +173,7 @@ public class Main {
     }
 
     public static void main(String Args[]){
-        /*
+        
         String dna_file = "../datasets/clean_datasets/dna_clean.50MB";
         String english_file = "../datasets/clean_datasets/english_clean.50MB";
         
@@ -173,10 +195,7 @@ public class Main {
             BufferedWriter w4 = new BufferedWriter(new FileWriter("out/english_topkq_exp.csv"));
             w4.write("");
                         
-
-            //n = 2^i simbolos, con i {10, 11, . . . , 23}
-
-            //Calentamiento:
+            //Pre-Calentamiento:
             Node root = quadratic_build(dna_text.substring(0, 2048));
             root.count("AC");
             root.locate("AC");
@@ -188,9 +207,11 @@ public class Main {
             }catch (IOException e){e.printStackTrace();} 
 
             
-            for(int i=10;i<=15;i++){
-                System.out.println(i);
+            for(int i=10;i<=23;i++){
+                System.out.println("Procesando experimento con n=2^" + str(i));
+                System.out.println("Corriendo experimento DNA...")
                 experiment(dna_text, i, "dna");
+                System.out.println("Corriendo experimento English...")
                 experiment(english_text, i, "english");
             }
             
@@ -202,46 +223,6 @@ public class Main {
             e.printStackTrace(); 
         }
 
-        */
-
-        /*
-        Node root = quadratic_build("GATCAATGAGGTGGACACCAGAGGCGGGGACTTGTAAATAACACTGGGCTGTAGGAGTGATGGGGTTCACCTCTAATTCT" +
-                "AAGATGGCTAGATAATGCATCTTTCAGGGTTGTGCTTCTATCTAGAAGGTAGAGCTGTGGTCGTTCAATAAAAGTCCTCA" +
-                "AGAGGTTGGTTAATACGCATGTTTAATAGTACAGTATGGTGACTATAGTCAACAATAATTTATTGTACATTTTTAAATAG" +
-                "CTAGAAGAAAAGCATTGGGAAGTTTCCAACATGAAGAAAAGATAAATGGTCAAGGGAATGGATATCCTAATTACCCTGAT" +
-                "TTGATCATTATGCATTATATACATGAATCAAAATATCACACATACCTTCAAACTATGTACAAATATTATATACCAATAAA" +
-                "AAATCATCATCATCATCTCCATCATCACCACCCTCCTCCTCATCACCACCAGCATCACCACCATCATCACCACCACCATC" +
-                "ATCACCACCACCACTGCCATCATCATCACCACCACTGTGCCATCATCATCACCACCACTGTCATTATCACCACCACCATC" +
-                "ATCACCAACACCACTGCCATCGTCATCACCACCACTGTCATTATCACCACCACCATCACCAACATCACCACCACCATTAT" +
-                "CACCACCATCAACACCACCACCCCCATCATCATCATCACTACTACCATCATTACCAGCACCACCACCACTATCACCACCA" +
-                "CCACCACAATCACCATCACCACTATCATCAACATCATCACTACCACCATCACCAACACCACCATCATTATCACCACCACC" +
-                "ACCATCACCAACATCACCACCATCATCATCACCACCATCACCAAGACCATCATCATCACCATCACCACCAACATCACCAC" +
-                "CATCACCAACACCACCATCACCACCACCACCACCATCATCACCACCACCACCATCATCATCACCACCACCGCCATCATCA" +
-                "TCGCCACCACCATGACCACCACCATCACAACCATCACCACCATCACAACCACCATCATCACTATCGCTATCACCACCATC" +
-                "ACCATTACCACCACCATTACTACAACCATGACCATCACCACCATCACCACCACCATCACAACGATCACCATCACAGCCAC" +
-                "CATCATCACCACCACCACCACCACCATCACCATCAAACCATCGGCATTATTATTTTTTTAGAATTTTGTTGGGATTCAGT" +
-                "ATCTGCCAAGATACCCATTCTTAAAACATGAAAAAGCAGCTGACCCTCCTGTGGCCCCCTTTTTGGGCAGTCATTGCAGG" +
-                "ACCTCATCCCCAAGCAGCAGCTCTGGTGGCATACAGGCAACCCACCACCAAGGTAGAGGGTAATTGAGCAGAAAAGCCAC" +
-                "TTCCTCCAGCAGTTCCCTGTCTGAGCTGCTGTCCTTGGACTTGAAGAAGCTTCTGGAACATGCTGGGGAGGAAGGAAGAC" +
-                "ATTTCACTTATTGAGTGGCCTGATGCAGAACAGAGACCCAGCTGGTTCACTCTAGTTCGGACTAAAACTCACCCCTGTCT" +
-                "ATAAGCATCAGCCTCGGCAGGATGCATTTCACATTTGTGATCTCATTTAACCTCCACAAAGACCCAGAAGGGTTGGTAAC" +
-                "ATTATCATACCTAGGCCTACTATTTTAAAAATCTAACACCCATGCAGCCCGGGCACTGAAGTGGAGGCTGGCCACGGAGA");
-        root.topkq(1, 2);
-        */
-
-        //Node root = buildTree("cdddcdcd");
-        //Node root = quadratic_build("abcabxabcd");
-        //root.printTree(0);
-        //Node root = buildTree("elaelapacacapela");
-        //Node root = buildTree("GATCAATGAGGTGGA");
-        //Node root = buildTree("BANANA");
-        //Node root = buildTree("hopolapacopomopoepestapamapas");
-        //Node root = buildTree("abcdabe");
-        Node root = quadratic_build("BANANA");
-        root.topkq(2,3 );
-        //Node root = quadratic_build("GATCAATGAGGTGGA");
-        //root.printTree(0);
-        //System.out.println(root.locate("N"));
     }
 
     public static Node quadratic_build(String word){
@@ -266,7 +247,6 @@ public class Main {
 
         for(int i=0; i<word.length(); i++) {
             char c = word.charAt(i);
-            //System.out.println("\t\tInserting: " + c);
             //Inserto a todos los edges que llevan a hojas
             for(Edge e : ap.leafEdges){
                 e.setLabel(e.getLabel() + c);
@@ -278,20 +258,6 @@ public class Main {
 
             while(ap.run){
                 ap.insert(ap.toInsert.charAt(ap.toInsert.length()-1));
-                //System.out.println("END OF ROUND");
-                //root.printTree(0);
-                //System.out.println("Active node: " + ap.active_node);
-                //System.out.println("Is root: " + ap.isRoot);
-                /*if(ap.active_edge != null){
-                    System.out.println("Active edge: " + ap.active_edge);
-                }
-                else{
-                    System.out.println("Active edge: null");
-                }*/
-                //System.out.println("Active length: " + ap.active_length);
-                //System.out.println("Remainder: " + ap.remainder);
-                //System.out.println("To insert: " + ap.toInsert);
-                //System.out.println("------------------------------------");
             }
 
             ap.lastSplited = null;
